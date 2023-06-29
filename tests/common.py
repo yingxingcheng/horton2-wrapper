@@ -60,7 +60,7 @@ def get_atom(n):
 
 def load_fchk(fname):
     """Load fchk file."""
-    with path("lrccd.data", fname) as fpath:
+    with path("horton2_wrapper.data", fname) as fpath:
         filename = str(fpath)
     return filename
 
@@ -90,23 +90,3 @@ def tmpfile(suffix):
     finally:
         if os.path.exists(fn):
             os.remove(fn)
-
-
-def prepare_input_for_acks2_from_scf(scf, lmax, dens_type="case_1"):
-    """Prepare input for ACKS2.
-
-    Parameters
-    ----------
-    scf: SCF
-        The SCF object.
-    lmax: int
-        The maximum angular moment index.
-    dens_type: {'case_1', 'case_2'}
-        The type of density function, where `case_1` corresponds the distributed moment defined
-        the ACKS2 model, while monopoles are removed in `case_2`.
-
-    """
-    dens_part = DensPart(scf)
-    # chi_ks = ChiKS.from_denspart(dens_part, lmax, dens_type)
-    hardness = Hardness(scf, chi_ks.F_ao)
-    return chi_ks, hardness.eta, hardness.eta_h, hardness.eta_xc
